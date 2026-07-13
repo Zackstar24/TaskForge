@@ -16,20 +16,29 @@
 - Added .gitignore
 - Published repository to GitHub
 
+## July 13, 2026
+
+### Completed
+- Converted the backend directory into a Python package
+- Installed and configured SQLAlchemy
+- Created the SQLite database connection and session system
+- Created the Task database model
+- Configured FastAPI to create database tables during application startup
+- Added Pydantic schemas for task creation and API responses
+- Created the first task CRUD operation
+- Created the POST /tasks API endpoint using a FastAPI router
+- Verified that tasks are validated, saved to SQLite, and returned by the API
+
 ### Learned
-- How Git repositories work locally vs remotely
-- How virtual environments isolate Python dependencies
-- How FastAPI applications are structured
-- How to create commits and push changes to GitHub
-- Learned how Python packages and module imports work
-- Learned why Python imports omit the `.py` extension
-- Learned the purpose of a SQLAlchemy engine and database session
-- Learned how SQLAlchemy models map Python classes to database tables
-- Learned how FastAPI lifespan events can run startup logic
-- Learned why local SQLite database files should not be committed
+- The difference between SQLAlchemy database models and Pydantic API schemas
+- How Pydantic validates request data and serializes API responses
+- How FastAPI dependency injection provides and closes database sessions
+- How FastAPI routers separate endpoints from the main application file
+- How CRUD functions separate database logic from HTTP route logic
+- Why a successful creation endpoint returns HTTP 201 Created
+- How to verify database persistence directly with a SQLAlchemy query
 
 ## Future Learning Goals
-
 - [ ] Improve Python skills
 - [ ] Practice writing cleaner code
 - [ ] Learn design patterns
@@ -42,8 +51,8 @@
 ## Next Goals
 
 ### Backend Foundation
-- [ ] Improve backend project structure
-- [ ] Learn and implement SQLAlchemy ORM
+- [x] Improve backend project structure
+- [x] Learn and implement SQLAlchemy ORM
 - [x] Set up SQLite database
 - [x] Create database connection system
 - [x] Create database models
@@ -51,11 +60,11 @@
 - [ ] Create User model
 - [ ] Learn database migrations
 - [ ] Implement CRUD operations for tasks
-- [ ] Create API routes using FastAPI routers
-- [ ] Add API request validation with Pydantic schemas
+- [x] Create API routes using FastAPI routers
+- [x] Add API request validation with Pydantic schemas
 
 ### Task Management Features
-- [ ] Create tasks
+- [x] Create tasks
 - [ ] View tasks
 - [ ] Update tasks
 - [ ] Delete tasks
