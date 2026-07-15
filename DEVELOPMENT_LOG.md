@@ -34,6 +34,16 @@
 - Created the POST /tasks API endpoint using a FastAPI router
 - Verified that tasks are validated, saved to SQLite, and returned by the API
 
+## July 15, 2026
+
+### Completed
+- Completed database-backed CRUD operations for tasks
+- Added endpoints to create, retrieve, update, complete, and delete tasks
+- Added Pydantic validation for task creation and partial updates
+- Added proper 404, 422, 201, and 204 API responses
+- Added and configured Alembic for database schema migrations
+- Created and tested the initial tasks-table migration
+- Brought the existing SQLite database under Alembic migration control without losing task data
 
 ## Checklist:
 
@@ -45,10 +55,11 @@
 - [x] Create database models
 - [x] Create Task model
 - [ ] Create User model
-- [ ] Learn database migrations
+- [x] Learn database migrations
 - [x] Implement CRUD operations for tasks
 - [x] Create API routes using FastAPI routers
 - [x] Add API request validation with Pydantic schemas
+- [x] Create initial Alembic database migration
 
 ### Task Management Features
 - [x] Create tasks
