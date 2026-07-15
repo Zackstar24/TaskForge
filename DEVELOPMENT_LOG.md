@@ -15,6 +15,11 @@
 - Added requirements.txt
 - Added .gitignore
 - Published repository to GitHub
+- Added GET /tasks endpoint to retrieve all tasks
+- Added GET /tasks/{task_id} endpoint to retrieve a single task
+- Added validation requiring task IDs to be greater than or equal to 1
+- Added a 404 Not Found response for tasks that do not exist
+- Verified task retrieval and error responses through PowerShell
 
 ## July 13, 2026
 
@@ -65,7 +70,7 @@
 
 ### Task Management Features
 - [x] Create tasks
-- [ ] View tasks
+- [x] View tasks
 - [ ] Update tasks
 - [ ] Delete tasks
 - [ ] Mark tasks as completed
