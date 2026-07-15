@@ -34,26 +34,8 @@
 - Created the POST /tasks API endpoint using a FastAPI router
 - Verified that tasks are validated, saved to SQLite, and returned by the API
 
-### Learned
-- The difference between SQLAlchemy database models and Pydantic API schemas
-- How Pydantic validates request data and serializes API responses
-- How FastAPI dependency injection provides and closes database sessions
-- How FastAPI routers separate endpoints from the main application file
-- How CRUD functions separate database logic from HTTP route logic
-- Why a successful creation endpoint returns HTTP 201 Created
-- How to verify database persistence directly with a SQLAlchemy query
 
-## Future Learning Goals
-- [ ] Improve Python skills
-- [ ] Practice writing cleaner code
-- [ ] Learn design patterns
-- [ ] Learn software architecture concepts
-- [ ] Learn Docker
-- [ ] Learn CI/CD pipelines
-- [ ] Learn cloud services
-- [ ] Learn Linux server basics
-
-## Next Goals
+## Checklist:
 
 ### Backend Foundation
 - [x] Improve backend project structure
@@ -64,16 +46,16 @@
 - [x] Create Task model
 - [ ] Create User model
 - [ ] Learn database migrations
-- [ ] Implement CRUD operations for tasks
+- [x] Implement CRUD operations for tasks
 - [x] Create API routes using FastAPI routers
 - [x] Add API request validation with Pydantic schemas
 
 ### Task Management Features
 - [x] Create tasks
 - [x] View tasks
-- [ ] Update tasks
-- [ ] Delete tasks
-- [ ] Mark tasks as completed
+- [x] Update tasks
+- [x] Delete tasks
+- [x] Mark tasks as completed
 - [ ] Add task priorities
 - [ ] Add task categories/tags
 - [ ] Add due dates

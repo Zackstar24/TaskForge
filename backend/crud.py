@@ -22,3 +22,26 @@ def get_tasks(db: Session) -> list[models.Task]:
 
 def get_task(db: Session, task_id: int) -> models.Task | None:
     return db.get(models.Task, task_id)
+
+def update_task(
+    db: Session,
+    db_task: models.Task,
+    task: schemas.TaskUpdate,
+) -> models.Task:
+    update_data = task.model_dump(exclude_unset=True)
+
+    for field, value in update_data.items():
+        setattr(db_task, field, value)
+
+    db.commit()
+    db.refresh(db_task)
+
+    return db_task
+
+
+def delete_task(
+    db: Session,
+    db_task: models.Task,
+) -> None:
+    db.delete(db_task)
+    db.commit()
