@@ -68,7 +68,7 @@
 - [x] Delete tasks
 - [x] Mark tasks as completed
 - [ ] Add task priorities
-- [ ] Add task categories/tags
+- [ ] Add task categories/tagsD
 - [ ] Add due dates
 - [ ] Add task filtering and sorting
 - [ ] Add search functionality
