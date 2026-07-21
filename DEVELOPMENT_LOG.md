@@ -45,6 +45,19 @@
 - Created and tested the initial tasks-table migration
 - Brought the existing SQLite database under Alembic migration control without losing task data
 
+## July 20, 2026
+
+- Added an automated testing environment using pytest, FastAPI TestClient, and an isolated in-memory SQLite database
+- Created API integration tests covering task creation, retrieval, updates, deletion, validation, and error responses
+- Added task priority support with low, medium, and high values
+- Added medium as the default priority for new and existing tasks
+- Updated the task database model, Pydantic schemas, and API responses to support priorities
+- Created and applied an Alembic migration for the new priority column
+- Identified and corrected a duplicate SQLite priority constraint before committing the migration
+- Added tests for default, explicit, invalid, updated, and null priority values
+- Debugged duplicate test-helper code and restored the complete CRUD test coverage
+- Verified that all 16 automated tests pass and that the database schema matches the SQLAlchemy models
+
 ## Checklist:
 
 ### Backend Foundation
