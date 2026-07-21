@@ -67,7 +67,7 @@
 - [x] Update tasks
 - [x] Delete tasks
 - [x] Mark tasks as completed
-- [ ] Add task priorities
+- [x] Add task priorities
 - [ ] Add task categories/tagsD
 - [ ] Add due dates
 - [ ] Add task filtering and sorting
@@ -113,10 +113,13 @@
 - [ ] Add API documentation
 - [ ] Learn environment variables
 - [ ] Create configuration management
-- [ ] Add automated testing
+- [x] Add automated testing
 - [ ] Write backend unit tests
-- [ ] Write API integration tests
+- [x] Write API integration tests
 - [ ] Learn debugging techniques
+- [x] Configure an isolated SQLite database for automated tests
+- [x] Add automated CRUD and validation test coverage
+- [x] Validate task priority values
 
 ### Security Improvements
 - [ ] Learn common web security concepts

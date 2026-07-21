@@ -7,13 +7,19 @@ def create_test_task(
     client: TestClient,
     title: str = "Test task",
     description: str | None = "Task created during testing",
+    priority: str | None = None,
 ) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "title": title,
+        "description": description,
+    }
+
+    if priority is not None:
+        payload["priority"] = priority
+
     response = client.post(
         "/tasks",
-        json={
-            "title": title,
-            "description": description,
-        },
+        json=payload,
     )
 
     assert response.status_code == 201
@@ -46,6 +52,7 @@ def test_create_task(client: TestClient) -> None:
     assert data["id"] == 1
     assert data["title"] == "Write automated tests"
     assert data["description"] == "Test the TaskForge API"
+    assert data["priority"] == "medium"
     assert data["completed"] is False
     assert data["created_at"] is not None
 
@@ -58,6 +65,36 @@ def test_create_task_rejects_blank_title(
         json={
             "title": "   ",
             "description": "This request should fail",
+        },
+    )
+
+    assert response.status_code == 422
+
+
+def test_create_task_with_priority(
+    client: TestClient,
+) -> None:
+    response = client.post(
+        "/tasks",
+        json={
+            "title": "High-priority task",
+            "description": "This task is urgent",
+            "priority": "high",
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.json()["priority"] == "high"
+
+
+def test_create_task_rejects_invalid_priority(
+    client: TestClient,
+) -> None:
+    response = client.post(
+        "/tasks",
+        json={
+            "title": "Invalid priority task",
+            "priority": "urgent",
         },
     )
 
@@ -88,6 +125,10 @@ def test_read_tasks(client: TestClient) -> None:
     assert [task["title"] for task in data] == [
         "First task",
         "Second task",
+    ]
+    assert [task["priority"] for task in data] == [
+        "medium",
+        "medium",
     ]
 
 
@@ -141,6 +182,7 @@ def test_update_task(client: TestClient) -> None:
         updated_task["description"]
         == "This description should remain unchanged"
     )
+    assert updated_task["priority"] == "medium"
     assert updated_task["completed"] is True
     assert updated_task["created_at"] == created_task["created_at"]
 
@@ -150,6 +192,53 @@ def test_update_task(client: TestClient) -> None:
 
     assert saved_response.status_code == 200
     assert saved_response.json() == updated_task
+
+
+def test_update_task_priority(
+    client: TestClient,
+) -> None:
+    created_task = create_test_task(
+        client,
+        title="Change this priority",
+        priority="low",
+    )
+
+    response = client.patch(
+        f"/tasks/{created_task['id']}",
+        json={
+            "priority": "high",
+        },
+    )
+
+    assert response.status_code == 200
+
+    updated_task = response.json()
+
+    assert updated_task["priority"] == "high"
+    assert updated_task["title"] == created_task["title"]
+    assert updated_task["completed"] == created_task["completed"]
+
+    saved_response = client.get(
+        f"/tasks/{created_task['id']}"
+    )
+
+    assert saved_response.status_code == 200
+    assert saved_response.json()["priority"] == "high"
+
+
+def test_update_task_rejects_null_priority(
+    client: TestClient,
+) -> None:
+    created_task = create_test_task(client)
+
+    response = client.patch(
+        f"/tasks/{created_task['id']}",
+        json={
+            "priority": None,
+        },
+    )
+
+    assert response.status_code == 422
 
 
 def test_update_task_rejects_empty_body(

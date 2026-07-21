@@ -3,13 +3,14 @@ from typing import Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from backend.enums import TaskPriority
 
 class TaskBase(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
 
     title: str = Field(min_length=1, max_length=200)
     description: str | None = None
-
+    priority: TaskPriority = TaskPriority.MEDIUM
 
 class TaskCreate(TaskBase):
     pass
@@ -36,7 +37,11 @@ class TaskUpdate(BaseModel):
         if "completed" in self.model_fields_set and self.completed is None:
             raise ValueError("Completed cannot be null")
 
+        if "priority" in self.model_fields_set and self.priority is None:
+            raise ValueError("Priority cannot be null")
+
         return self
+    priority: TaskPriority | None = None
     
 class TaskResponse(TaskBase):
     model_config = ConfigDict(
