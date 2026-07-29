@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { getTasks } from "./api/tasks";
+import TaskForm from "./components/TaskForm";
 import type { Task } from "./types/task";
 
 import "./App.css";
@@ -22,6 +23,13 @@ function App() {
   const [errorMessage, setErrorMessage] = useState<string | null>(
     null,
   );
+
+  function handleTaskCreated(task: Task): void {
+    setTasks((currentTasks) => [
+      ...currentTasks,
+      task,
+    ]);
+  }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -79,6 +87,8 @@ function App() {
             </span>
           )}
         </header>
+
+        <TaskForm onTaskCreated={handleTaskCreated} />
 
         <div aria-live="polite">
           {isLoading && (

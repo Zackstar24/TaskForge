@@ -8,3 +8,9 @@ export interface Task {
   completed: boolean;
   created_at: string;
 }
+
+export interface CreateTaskInput {
+  title: string;
+  description: string | null;
+  priority: TaskPriority;
+}

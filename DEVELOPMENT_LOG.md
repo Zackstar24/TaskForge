@@ -108,7 +108,13 @@
 - [ ] Build task dashboard
 - [x] Connect frontend to FastAPI backend
 - [x] Display tasks from database
-- [ ] Create task creation interface
+- [x] Create task creation interface
+- [x] Create tasks from the frontend
+- [x] Add controlled React form inputs
+- [x] Add frontend form validation
+- [x] Handle task submission and submission errors
+- [x] Update the task list after successful creation
+- [x] Verify newly created tasks persist after refresh
 - [ ] Create task editing interface
 - [ ] Add responsive design for mobile screens
 - [x] Configure CORS for local frontend development
