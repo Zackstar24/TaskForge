@@ -98,23 +98,29 @@
 
 ### Frontend Development
 - [ ] Learn frontend framework basics
-- [ ] Choose frontend technology (React recommended)
-- [ ] Create frontend project structure
+- [x] Choose frontend technology (React recommended)
+- [x] Create frontend project structure
+- [x] Install Node.js and npm
+- [x] Initialize React and TypeScript frontend with Vite
+- [x] Verify frontend linting and production build
 - [ ] Build login page
 - [ ] Build registration page
 - [ ] Build task dashboard
-- [ ] Connect frontend to FastAPI backend
-- [ ] Display tasks from database
+- [x] Connect frontend to FastAPI backend
+- [x] Display tasks from database
 - [ ] Create task creation interface
 - [ ] Create task editing interface
 - [ ] Add responsive design for mobile screens
+- [x] Configure CORS for local frontend development
+- [x] Add TypeScript task models and frontend API client
+- [x] Display task priority and completion status
 
 ### Full-Stack Integration
-- [ ] Connect frontend and backend together
-- [ ] Handle API requests from frontend
+- [x] Connect frontend and backend together
+- [x] Handle API requests from frontend
 - [ ] Handle user sessions
-- [ ] Handle frontend errors
-- [ ] Add loading states
+- [x] Handle frontend errors
+- [x] Add loading states
 - [ ] Improve user experience
 - [ ] Add form validation
 

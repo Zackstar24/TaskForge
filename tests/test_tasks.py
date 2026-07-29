@@ -35,6 +35,22 @@ def test_home_endpoint(client: TestClient) -> None:
         "message": "TaskForge backend is running!"
     }
 
+def test_cors_allows_frontend_origin(
+    client: TestClient,
+) -> None:
+    response = client.options(
+        "/tasks",
+        headers={
+            "Origin": "http://localhost:5173",
+            "Access-Control-Request-Method": "GET",
+        },
+    )
+
+    assert response.status_code == 200
+    assert (
+        response.headers["access-control-allow-origin"]
+        == "http://localhost:5173"
+    )
 
 def test_create_task(client: TestClient) -> None:
     response = client.post(

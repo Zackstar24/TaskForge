@@ -1,122 +1,166 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+import { getTasks } from "./api/tasks";
+import type { Task } from "./types/task";
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+import "./App.css";
 
-      <div className="ticks"></div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+function formatCreatedAt(value: string): string {
+  const date = new Date(value);
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+  return new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date);
 }
 
-export default App
+
+function App() {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadTasks(): Promise<void> {
+      try {
+        setIsLoading(true);
+        setErrorMessage(null);
+
+        const taskData = await getTasks(controller.signal);
+
+        setTasks(taskData);
+      } catch (error: unknown) {
+        if (
+          error instanceof DOMException
+          && error.name === "AbortError"
+        ) {
+          return;
+        }
+
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred.",
+        );
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    void loadTasks();
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+  return (
+    <main className="app-shell">
+      <section className="task-panel">
+        <header className="app-header">
+          <div>
+            <p className="eyebrow">TASKFORGE</p>
+            <h1>My Tasks</h1>
+            <p className="subtitle">
+              Your first React and FastAPI connection.
+            </p>
+          </div>
+
+          {!isLoading && !errorMessage && (
+            <span className="task-count">
+              {tasks.length} {tasks.length === 1 ? "task" : "tasks"}
+            </span>
+          )}
+        </header>
+
+        <div aria-live="polite">
+          {isLoading && (
+            <p className="status-message">
+              Loading tasks...
+            </p>
+          )}
+
+          {!isLoading && errorMessage && (
+            <div
+              className="status-message error-message"
+              role="alert"
+            >
+              <strong>Tasks could not be loaded.</strong>
+              <p>{errorMessage}</p>
+              <p>
+                Make sure the FastAPI server is running on port
+                8000.
+              </p>
+            </div>
+          )}
+
+          {!isLoading
+            && !errorMessage
+            && tasks.length === 0 && (
+              <p className="status-message">
+                No tasks yet. Your first task will appear here.
+              </p>
+            )}
+
+          {!isLoading
+            && !errorMessage
+            && tasks.length > 0 && (
+              <ul className="task-list">
+                {tasks.map((task) => (
+                  <li
+                    className="task-card"
+                    key={task.id}
+                  >
+                    <div className="task-card-header">
+                      <h2>{task.title}</h2>
+
+                      <span
+                        className={
+                          `priority priority-${task.priority}`
+                        }
+                      >
+                        {task.priority}
+                      </span>
+                    </div>
+
+                    {task.description && (
+                      <p className="task-description">
+                        {task.description}
+                      </p>
+                    )}
+
+                    <div className="task-meta">
+                      <span
+                        className={
+                          task.completed
+                            ? "task-status task-status-complete"
+                            : "task-status"
+                        }
+                      >
+                        {task.completed
+                          ? "Completed"
+                          : "Open"}
+                      </span>
+
+                      <time dateTime={task.created_at}>
+                        Created {formatCreatedAt(task.created_at)}
+                      </time>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+        </div>
+      </section>
+    </main>
+  );
+}
+
+export default App;
