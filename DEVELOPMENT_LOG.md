@@ -58,6 +58,21 @@
 - Debugged duplicate test-helper code and restored the complete CRUD test coverage
 - Verified that all 16 automated tests pass and that the database schema matches the SQLAlchemy models
 
+## July 29, 2026
+
+- Initialized the React and TypeScript frontend with Vite
+- Verified the frontend development server, linting, and production build
+- Configured FastAPI CORS access for the local React frontend
+- Connected React to the FastAPI task API
+- Added loading, error, empty, and populated task-list states
+- Created TypeScript models and a dedicated frontend API client
+- Added a controlled form for creating tasks in the browser
+- Verified that newly created tasks persist in SQLite after refresh
+- Added controls for completing, reopening, and deleting tasks
+- Added per-task request states, deletion confirmation, and error feedback
+- Extracted task rendering and actions into a reusable TaskCard component
+- Verified backend tests and frontend production checks
+
 ## Checklist:
 
 ### Backend Foundation
@@ -97,29 +112,18 @@
 - [ ] Create user profile system
 
 ### Frontend Development
-- [ ] Learn frontend framework basics
-- [x] Choose frontend technology (React recommended)
-- [x] Create frontend project structure
-- [x] Install Node.js and npm
-- [x] Initialize React and TypeScript frontend with Vite
-- [x] Verify frontend linting and production build
-- [ ] Build login page
-- [ ] Build registration page
-- [ ] Build task dashboard
-- [x] Connect frontend to FastAPI backend
-- [x] Display tasks from database
-- [x] Create task creation interface
-- [x] Create tasks from the frontend
-- [x] Add controlled React form inputs
-- [x] Add frontend form validation
-- [x] Handle task submission and submission errors
-- [x] Update the task list after successful creation
-- [x] Verify newly created tasks persist after refresh
-- [ ] Create task editing interface
-- [ ] Add responsive design for mobile screens
-- [x] Configure CORS for local frontend development
-- [x] Add TypeScript task models and frontend API client
-- [x] Display task priority and completion status
+- [x] Set up the React, TypeScript, and Vite frontend environment
+- [x] Configure linting, production builds, and local CORS
+- [x] Create a typed API client and connect React to FastAPI
+- [x] Build the task dashboard with loading, error, empty, and populated states
+- [x] Display task details, priorities, and completion status
+- [x] Create tasks with validation, submission feedback, and database persistence
+- [x] Complete, reopen, and delete tasks with confirmation and per-task request states
+- [x] Organize the interface into reusable components and synchronize frontend state with API responses
+- [ ] Create the task editing interface
+- [ ] Complete and test responsive mobile design
+- [ ] Build registration and login interfaces
+- [ ] Continue developing React fundamentals through implementation
 
 ### Full-Stack Integration
 - [x] Connect frontend and backend together

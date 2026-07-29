@@ -299,3 +299,88 @@ h1 {
     width: 100%;
   }
 }
+.task-card-completed {
+  background: #f9fafb;
+}
+
+.task-card-completed h2 {
+  color: #6b7280;
+  text-decoration: line-through;
+}
+
+.task-card-footer {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+
+.task-card-footer .task-meta {
+  flex: 1;
+  margin-top: 0;
+}
+
+.card-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.card-action-button {
+  padding: 8px 11px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.card-action-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.toggle-task-button {
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.toggle-task-button:hover:not(:disabled) {
+  background: #eff6ff;
+}
+
+.delete-task-button {
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.delete-task-button:hover:not(:disabled) {
+  background: #fef2f2;
+}
+
+.task-action-error {
+  margin: 14px 0 0;
+  padding: 9px 11px;
+  color: #991b1b;
+  font-size: 0.8rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  .task-card-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .card-actions {
+    width: 100%;
+  }
+
+  .card-action-button {
+    flex: 1;
+  }
+}

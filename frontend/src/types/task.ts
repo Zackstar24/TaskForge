@@ -14,3 +14,10 @@ export interface CreateTaskInput {
   description: string | null;
   priority: TaskPriority;
 }
+
+export interface UpdateTaskInput {
+  title?: string;
+  description?: string | null;
+  priority?: TaskPriority;
+  completed?: boolean;
+}

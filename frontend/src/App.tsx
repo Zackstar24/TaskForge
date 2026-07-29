@@ -1,20 +1,11 @@
 import { useEffect, useState } from "react";
 
 import { getTasks } from "./api/tasks";
+import TaskCard from "./components/TaskCard";
 import TaskForm from "./components/TaskForm";
 import type { Task } from "./types/task";
 
 import "./App.css";
-
-
-function formatCreatedAt(value: string): string {
-  const date = new Date(value);
-
-  return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
-}
 
 
 function App() {
@@ -29,6 +20,24 @@ function App() {
       ...currentTasks,
       task,
     ]);
+  }
+
+  function handleTaskUpdated(updatedTask: Task): void {
+    setTasks((currentTasks) =>
+      currentTasks.map((task) =>
+        task.id === updatedTask.id
+          ? updatedTask
+          : task,
+      ),
+    );
+  }
+
+  function handleTaskDeleted(taskId: number): void {
+    setTasks((currentTasks) =>
+      currentTasks.filter(
+        (task) => task.id !== taskId,
+      ),
+    );
   }
 
   useEffect(() => {
@@ -77,7 +86,7 @@ function App() {
             <p className="eyebrow">TASKFORGE</p>
             <h1>My Tasks</h1>
             <p className="subtitle">
-              Your first React and FastAPI connection.
+              Plan the work. Complete the work.
             </p>
           </div>
 
@@ -124,46 +133,12 @@ function App() {
             && tasks.length > 0 && (
               <ul className="task-list">
                 {tasks.map((task) => (
-                  <li
-                    className="task-card"
+                  <TaskCard
                     key={task.id}
-                  >
-                    <div className="task-card-header">
-                      <h2>{task.title}</h2>
-
-                      <span
-                        className={
-                          `priority priority-${task.priority}`
-                        }
-                      >
-                        {task.priority}
-                      </span>
-                    </div>
-
-                    {task.description && (
-                      <p className="task-description">
-                        {task.description}
-                      </p>
-                    )}
-
-                    <div className="task-meta">
-                      <span
-                        className={
-                          task.completed
-                            ? "task-status task-status-complete"
-                            : "task-status"
-                        }
-                      >
-                        {task.completed
-                          ? "Completed"
-                          : "Open"}
-                      </span>
-
-                      <time dateTime={task.created_at}>
-                        Created {formatCreatedAt(task.created_at)}
-                      </time>
-                    </div>
-                  </li>
+                    task={task}
+                    onTaskUpdated={handleTaskUpdated}
+                    onTaskDeleted={handleTaskDeleted}
+                  />
                 ))}
               </ul>
             )}
