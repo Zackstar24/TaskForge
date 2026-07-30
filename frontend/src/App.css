@@ -384,3 +384,45 @@ h1 {
     flex: 1;
   }
 }
+.task-edit-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+}
+
+.task-edit-wide {
+  grid-column: 1 / -1;
+}
+
+.task-edit-actions {
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.edit-task-button {
+  color: #374151;
+}
+
+.edit-task-button:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+.save-task-button {
+  color: #ffffff;
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.save-task-button:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+@media (max-width: 600px) {
+  .task-edit-form {
+    grid-template-columns: 1fr;
+  }
+
+  .task-edit-actions {
+    grid-column: 1;
+  }
+}

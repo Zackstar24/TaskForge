@@ -73,6 +73,14 @@
 - Extracted task rendering and actions into a reusable TaskCard component
 - Verified backend tests and frontend production checks
 
+## July 30, 2026
+
+- Added inline editing for task titles, descriptions, and priorities
+- Added controlled edit inputs with save, cancel, validation, and request states
+- Reused the existing PATCH API integration to persist task changes
+- Verified edited task values persist after browser refresh
+- Verified frontend linting, production build, and backend tests
+
 ## Checklist:
 
 ### Backend Foundation
@@ -120,7 +128,7 @@
 - [x] Create tasks with validation, submission feedback, and database persistence
 - [x] Complete, reopen, and delete tasks with confirmation and per-task request states
 - [x] Organize the interface into reusable components and synchronize frontend state with API responses
-- [ ] Create the task editing interface
+- [x] Create the task editing interface
 - [ ] Complete and test responsive mobile design
 - [ ] Build registration and login interfaces
 - [ ] Continue developing React fundamentals through implementation
