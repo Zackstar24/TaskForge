@@ -47,3 +47,15 @@ def client() -> Generator[TestClient, None, None]:
     finally:
         app.dependency_overrides.clear()
         Base.metadata.drop_all(bind=test_engine)
+
+
+@pytest.fixture
+def db_session(
+    client: TestClient,
+) -> Generator[Session, None, None]:
+    db = TestingSessionLocal()
+
+    try:
+        yield db
+    finally:
+        db.close()

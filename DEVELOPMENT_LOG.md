@@ -81,6 +81,14 @@
 - Verified edited task values persist after browser refresh
 - Verified frontend linting, production build, and backend tests
 
+## August 6, 2026
+
+- Added a User database model with unique normalized email addresses
+- Added secure Argon2 password hashing and verification utilities
+- Created the user registration endpoint with validation and duplicate-email handling
+- Added and applied an Alembic migration for the users table
+- Added registration tests covering email normalization, password hashing, invalid input, response security, and duplicate accounts
+- Verified all 21 automated tests pass and the database schema matches the SQLAlchemy models
 ## Checklist:
 
 ### Backend Foundation
@@ -157,6 +165,16 @@
 - [x] Configure an isolated SQLite database for automated tests
 - [x] Add automated CRUD and validation test coverage
 - [x] Validate task priority values
+
+### Authentication and Authorization
+
+- [x] Add the user model and database migration
+- [x] Add secure password hashing
+- [x] Add user registration with validation and duplicate-email handling
+- [x] Test registration and password storage
+- [ ] Add JWT login and authenticated-user dependencies
+- [ ] Protect task routes and assign tasks to users
+- [ ] Build frontend registration, login, logout, and session handling
 
 ### Security Improvements
 - [ ] Learn common web security concepts
