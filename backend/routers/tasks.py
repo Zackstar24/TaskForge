@@ -1,10 +1,18 @@
+from backend.routers.auth import CurrentUser
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Path, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Path,
+    status,
+)
 from sqlalchemy.orm import Session
 
 from backend import crud, models, schemas
 from backend.database import get_db
+from backend.routers.auth import CurrentUser
 
 
 router = APIRouter(
@@ -13,15 +21,26 @@ router = APIRouter(
 )
 
 
-DatabaseSession = Annotated[Session, Depends(get_db)]
-TaskId = Annotated[int, Path(ge=1)]
+DatabaseSession = Annotated[
+    Session,
+    Depends(get_db),
+]
+TaskId = Annotated[
+    int,
+    Path(ge=1),
+]
 
 
 def get_task_or_404(
     db: Session,
     task_id: int,
+    user_id: int,
 ) -> models.Task:
-    db_task = crud.get_task(db=db, task_id=task_id)
+    db_task = crud.get_task(
+        db=db,
+        task_id=task_id,
+        user_id=user_id,
+    )
 
     if db_task is None:
         raise HTTPException(
@@ -40,16 +59,27 @@ def get_task_or_404(
 def create_task(
     task: schemas.TaskCreate,
     db: DatabaseSession,
+    current_user: CurrentUser,
 ) -> models.Task:
-    return crud.create_task(db=db, task=task)
+    return crud.create_task(
+        db=db,
+        task=task,
+        user_id=current_user.id,
+    )
 
 
 @router.get(
     "",
     response_model=list[schemas.TaskResponse],
 )
-def read_tasks(db: DatabaseSession) -> list[models.Task]:
-    return crud.get_tasks(db=db)
+def read_tasks(
+    db: DatabaseSession,
+    current_user: CurrentUser,
+) -> list[models.Task]:
+    return crud.get_tasks(
+        db=db,
+        user_id=current_user.id,
+    )
 
 
 @router.get(
@@ -59,8 +89,13 @@ def read_tasks(db: DatabaseSession) -> list[models.Task]:
 def read_task(
     task_id: TaskId,
     db: DatabaseSession,
+    current_user: CurrentUser,
 ) -> models.Task:
-    return get_task_or_404(db=db, task_id=task_id)
+    return get_task_or_404(
+        db=db,
+        task_id=task_id,
+        user_id=current_user.id,
+    )
 
 
 @router.patch(
@@ -71,8 +106,13 @@ def update_task(
     task_id: TaskId,
     task: schemas.TaskUpdate,
     db: DatabaseSession,
+    current_user: CurrentUser,
 ) -> models.Task:
-    db_task = get_task_or_404(db=db, task_id=task_id)
+    db_task = get_task_or_404(
+        db=db,
+        task_id=task_id,
+        user_id=current_user.id,
+    )
 
     return crud.update_task(
         db=db,
@@ -89,8 +129,13 @@ def update_task(
 def delete_task(
     task_id: TaskId,
     db: DatabaseSession,
+    current_user: CurrentUser,
 ) -> None:
-    db_task = get_task_or_404(db=db, task_id=task_id)
+    db_task = get_task_or_404(
+        db=db,
+        task_id=task_id,
+        user_id=current_user.id,
+    )
 
     crud.delete_task(
         db=db,

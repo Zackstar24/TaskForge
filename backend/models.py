@@ -4,11 +4,12 @@ from sqlalchemy import (
     Boolean,
     DateTime,
     Enum as SqlEnum,
+    ForeignKey,
     String,
     Text,
     func,
 )
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.database import Base
 from backend.enums import TaskPriority
@@ -39,12 +40,28 @@ class User(Base):
         nullable=False,
     )
 
+    tasks: Mapped[list["Task"]] = relationship(
+        back_populates="owner",
+    )
 
 class Task(Base):
     __tablename__ = "tasks"
 
     id: Mapped[int] = mapped_column(
         primary_key=True,
+    )
+
+    user_id: Mapped[int | None] = mapped_column(
+        ForeignKey(
+            "users.id",
+            name="fk_tasks_user_id_users",
+        ),
+        index=True,
+        nullable=True,
+    )
+
+    owner: Mapped[User | None] = relationship(
+        back_populates="tasks",
     )
 
     title: Mapped[str] = mapped_column(

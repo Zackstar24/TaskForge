@@ -10,7 +10,7 @@ from sqlalchemy.pool import StaticPool
 import os
 os.environ.setdefault(
     "TASKFORGE_SECRET_KEY",
-    "taskforge-test-secret-key",
+    "taskforge-test-secret-key-at-least-32-bytes-long",
 )
 
 from backend.database import Base, get_db

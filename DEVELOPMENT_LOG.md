@@ -100,6 +100,12 @@
 - Added environment-based JWT secret configuration so application secrets are not stored in source control
 - Added authentication tests covering login, token issuance, current-user access, invalid credentials, and invalid tokens
 - Verified all 28 automated tests pass with no dependency or database schema issues
+- Added authenticated task ownership with a user-to-task relationship
+- Added a reversible Alembic migration linking tasks to users while preserving legacy tasks
+- Scoped task creation, listing, retrieval, updates, and deletion to the authenticated user
+- Added authorization tests verifying users only see their own tasks and cannot access another user's tasks
+- Verified the ownership migration upgrades and downgrades without data loss
+- Verified all 31 automated tests pass
 
 ## Checklist:
 
@@ -185,7 +191,7 @@
 - [x] Add user registration with validation and duplicate-email handling
 - [x] Test registration and password storage
 - [x] Add JWT login and authenticated-user dependencies
-- [ ] Protect task routes and assign tasks to users
+- [x] Protect task routes and assign tasks to users
 - [ ] Build frontend registration, login, logout, and session handling
 
 ### Security Improvements

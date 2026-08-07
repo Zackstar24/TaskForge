@@ -9,8 +9,12 @@ from backend.security import hash_password
 def create_task(
     db: Session,
     task: schemas.TaskCreate,
+    user_id: int,
 ) -> models.Task:
-    db_task = models.Task(**task.model_dump())
+    db_task = models.Task(
+        **task.model_dump(),
+        user_id=user_id,
+    )
 
     db.add(db_task)
     db.commit()
@@ -19,17 +23,29 @@ def create_task(
     return db_task
 
 
-def get_tasks(db: Session) -> list[models.Task]:
-    statement = select(models.Task).order_by(models.Task.id)
+def get_tasks(
+    db: Session,
+    user_id: int,
+) -> list[models.Task]:
+    statement = (
+        select(models.Task)
+        .where(models.Task.user_id == user_id)
+        .order_by(models.Task.id)
+    )
 
     return list(db.scalars(statement).all())
-
 
 def get_task(
     db: Session,
     task_id: int,
+    user_id: int,
 ) -> models.Task | None:
-    return db.get(models.Task, task_id)
+    statement = select(models.Task).where(
+        models.Task.id == task_id,
+        models.Task.user_id == user_id,
+    )
+
+    return db.scalar(statement)
 
 
 def update_task(

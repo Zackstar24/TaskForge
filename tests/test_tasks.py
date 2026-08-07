@@ -1,6 +1,76 @@
 from typing import Any
 
+import pytest
 from fastapi.testclient import TestClient
+
+
+@pytest.fixture(autouse=True)
+def authenticate_task_client(
+    client: TestClient,
+) -> None:
+    email = "task-owner@example.com"
+    password = "secure-password"
+
+    register_response = client.post(
+        "/auth/register",
+        json={
+            "email": email,
+            "password": password,
+        },
+    )
+
+    assert register_response.status_code == 201
+
+    login_response = client.post(
+        "/auth/login",
+        json={
+            "email": email,
+            "password": password,
+        },
+    )
+
+    assert login_response.status_code == 200
+
+    access_token = login_response.json()["access_token"]
+
+    client.headers.update(
+        {
+            "Authorization": f"Bearer {access_token}",
+        }
+    )
+
+
+def create_auth_headers(
+    client: TestClient,
+    email: str,
+) -> dict[str, str]:
+    password = "secure-password"
+
+    register_response = client.post(
+        "/auth/register",
+        json={
+            "email": email,
+            "password": password,
+        },
+    )
+
+    assert register_response.status_code == 201
+
+    login_response = client.post(
+        "/auth/login",
+        json={
+            "email": email,
+            "password": password,
+        },
+    )
+
+    assert login_response.status_code == 200
+
+    access_token = login_response.json()["access_token"]
+
+    return {
+        "Authorization": f"Bearer {access_token}",
+    }
 
 
 def create_test_task(
@@ -328,3 +398,106 @@ def test_invalid_task_id_returns_422(
     response = client.get("/tasks/0")
 
     assert response.status_code == 422
+
+def test_task_routes_require_authentication(
+    client: TestClient,
+) -> None:
+    client.headers.pop("Authorization", None)
+
+    response = client.get("/tasks")
+
+    assert response.status_code == 401
+    assert response.json() == {
+        "detail": "Could not validate credentials",
+    }
+
+def test_users_only_see_their_own_tasks(
+    client: TestClient,
+) -> None:
+    first_user_task = create_test_task(
+        client,
+        title="First user's task",
+    )
+
+    second_user_headers = create_auth_headers(
+        client,
+        "second-user@example.com",
+    )
+
+    second_task_response = client.post(
+        "/tasks",
+        headers=second_user_headers,
+        json={
+            "title": "Second user's task",
+        },
+    )
+
+    assert second_task_response.status_code == 201
+
+    first_user_response = client.get("/tasks")
+
+    assert first_user_response.status_code == 200
+    assert first_user_response.json() == [
+        first_user_task,
+    ]
+
+    second_user_response = client.get(
+        "/tasks",
+        headers=second_user_headers,
+    )
+
+    assert second_user_response.status_code == 200
+
+    second_user_tasks = second_user_response.json()
+
+    assert len(second_user_tasks) == 1
+    assert (
+        second_user_tasks[0]["title"]
+        == "Second user's task"
+    )
+
+
+def test_user_cannot_access_another_users_task(
+    client: TestClient,
+) -> None:
+    first_user_task = create_test_task(
+        client,
+        title="Private task",
+    )
+
+    second_user_headers = create_auth_headers(
+        client,
+        "second-user@example.com",
+    )
+
+    task_url = f"/tasks/{first_user_task['id']}"
+
+    get_response = client.get(
+        task_url,
+        headers=second_user_headers,
+    )
+
+    patch_response = client.patch(
+        task_url,
+        headers=second_user_headers,
+        json={
+            "title": "Unauthorized change",
+        },
+    )
+
+    delete_response = client.delete(
+        task_url,
+        headers=second_user_headers,
+    )
+
+    assert get_response.status_code == 404
+    assert patch_response.status_code == 404
+    assert delete_response.status_code == 404
+
+    owner_response = client.get(task_url)
+
+    assert owner_response.status_code == 200
+    assert (
+        owner_response.json()["title"]
+        == "Private task"
+    )
