@@ -108,3 +108,24 @@ class UserResponse(BaseModel):
     id: int
     email: EmailStr
     created_at: datetime
+
+class UserLogin(BaseModel):
+    model_config = ConfigDict(
+        str_strip_whitespace=True,
+    )
+
+    email: EmailStr
+    password: str = Field(
+        min_length=1,
+        max_length=128,
+    )
+
+    @field_validator("email")
+    @classmethod
+    def normalize_email(cls, value: EmailStr) -> str:
+        return str(value).lower()
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"

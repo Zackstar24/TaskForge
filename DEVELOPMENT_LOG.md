@@ -89,6 +89,18 @@
 - Added and applied an Alembic migration for the users table
 - Added registration tests covering email normalization, password hashing, invalid input, response security, and duplicate accounts
 - Verified all 21 automated tests pass and the database schema matches the SQLAlchemy models
+
+## August 7, 2026
+
+- Added JWT-based user login with signed, expiring access tokens
+- Added secure credential verification using stored Argon2 password hashes
+- Added authenticated current-user resolution from bearer tokens
+- Created the protected `/auth/me` endpoint
+- Added consistent 401 responses for invalid credentials, missing tokens, and invalid tokens
+- Added environment-based JWT secret configuration so application secrets are not stored in source control
+- Added authentication tests covering login, token issuance, current-user access, invalid credentials, and invalid tokens
+- Verified all 28 automated tests pass with no dependency or database schema issues
+
 ## Checklist:
 
 ### Backend Foundation
@@ -172,7 +184,7 @@
 - [x] Add secure password hashing
 - [x] Add user registration with validation and duplicate-email handling
 - [x] Test registration and password storage
-- [ ] Add JWT login and authenticated-user dependencies
+- [x] Add JWT login and authenticated-user dependencies
 - [ ] Protect task routes and assign tasks to users
 - [ ] Build frontend registration, login, logout, and session handling
 

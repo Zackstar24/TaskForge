@@ -1,10 +1,17 @@
 from collections.abc import Generator
 
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
+
+import os
+os.environ.setdefault(
+    "TASKFORGE_SECRET_KEY",
+    "taskforge-test-secret-key",
+)
 
 from backend.database import Base, get_db
 from backend.main import app

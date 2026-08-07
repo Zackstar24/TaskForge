@@ -55,6 +55,11 @@ def delete_task(
     db.delete(db_task)
     db.commit()
 
+def get_user(
+    db: Session,
+    user_id: int,
+) -> models.User | None:
+    return db.get(models.User, user_id)
 
 def get_user_by_email(
     db: Session,
