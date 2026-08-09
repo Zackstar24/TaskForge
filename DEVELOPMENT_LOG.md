@@ -107,6 +107,16 @@
 - Verified the ownership migration upgrades and downgrades without data loss
 - Verified all 31 automated tests pass
 
+## August 9, 2026
+
+- Added frontend authentication types for users, registration, login, and JWT token responses
+- Added a shared API client with centralized bearer-token handling
+- Added browser access-token storage and logout support
+- Added frontend registration, login, and current-user API functions
+- Refactored the task API client to use authenticated requests
+- Added environment-based frontend API URL configuration for deployment
+- Verified frontend linting and production build pass
+
 ## Checklist:
 
 ### Backend Foundation
@@ -192,7 +202,7 @@
 - [x] Test registration and password storage
 - [x] Add JWT login and authenticated-user dependencies
 - [x] Protect task routes and assign tasks to users
-- [ ] Build frontend registration, login, logout, and session handling
+- [x] Build frontend registration, login, logout, and session handling
 
 ### Security Improvements
 - [ ] Learn common web security concepts

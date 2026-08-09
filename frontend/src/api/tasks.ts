@@ -1,3 +1,5 @@
+import { apiFetch } from "./client";
+
 import type {
   CreateTaskInput,
   Task,
@@ -5,14 +7,11 @@ import type {
 } from "../types/task";
 
 
-const API_BASE_URL = "http://127.0.0.1:8000";
-
-
 export async function getTasks(
   signal?: AbortSignal,
 ): Promise<Task[]> {
-  const response = await fetch(
-    `${API_BASE_URL}/tasks`,
+  const response = await apiFetch(
+    "/tasks",
     {
       signal,
     },
@@ -31,8 +30,8 @@ export async function getTasks(
 export async function createTask(
   task: CreateTaskInput,
 ): Promise<Task> {
-  const response = await fetch(
-    `${API_BASE_URL}/tasks`,
+  const response = await apiFetch(
+    "/tasks",
     {
       method: "POST",
       headers: {
@@ -56,8 +55,8 @@ export async function updateTask(
   taskId: number,
   updates: UpdateTaskInput,
 ): Promise<Task> {
-  const response = await fetch(
-    `${API_BASE_URL}/tasks/${taskId}`,
+  const response = await apiFetch(
+    `/tasks/${taskId}`,
     {
       method: "PATCH",
       headers: {
@@ -80,8 +79,8 @@ export async function updateTask(
 export async function deleteTask(
   taskId: number,
 ): Promise<void> {
-  const response = await fetch(
-    `${API_BASE_URL}/tasks/${taskId}`,
+  const response = await apiFetch(
+    `/tasks/${taskId}`,
     {
       method: "DELETE",
     },
