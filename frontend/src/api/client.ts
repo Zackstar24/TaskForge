@@ -40,11 +40,25 @@ export async function apiFetch(
     );
   }
 
-  return fetch(
-    `${API_BASE_URL}${path}`,
-    {
-      ...options,
-      headers,
-    },
-  );
+    try {
+    return await fetch(
+        `${API_BASE_URL}${path}`,
+        {
+        ...options,
+        headers,
+        },
+    );
+    }
+    catch (error: unknown) {
+    if (error instanceof TypeError) {
+      throw new Error(
+        "Unable to reach the TaskForge server. Make sure the API is running.",
+        {
+          cause: error,
+        },
+      );
+    }
+
+    throw error;
+  }
 }

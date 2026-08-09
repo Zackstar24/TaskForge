@@ -116,6 +116,15 @@
 - Refactored the task API client to use authenticated requests
 - Added environment-based frontend API URL configuration for deployment
 - Verified frontend linting and production build pass
+- Added frontend registration and login interface
+- Added automatic login after registration
+- Added authenticated session restoration across page refreshes
+- Added logout functionality and authenticated dashboard access
+- Added user-friendly registration, login, and network error messages
+- Persisted the local JWT development secret outside source control
+- Verified frontend linting and production build pass
+- Verified all 31 backend tests pass
+- Manually verified task creation, session restoration, logout, and login persistence
 
 ## Checklist:
 

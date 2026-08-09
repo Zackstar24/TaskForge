@@ -26,11 +26,17 @@ export async function registerUser(
     },
   );
 
-  if (!response.ok) {
+    if (response.status === 409) {
     throw new Error(
-      `Unable to register. Server returned ${response.status}.`,
+        "An account with this email already exists. Sign in instead.",
     );
-  }
+    }
+
+    if (!response.ok) {
+    throw new Error(
+        "Unable to create your account. Please try again.",
+    );
+    }
 
   return response.json() as Promise<User>;
 }
@@ -50,11 +56,17 @@ export async function loginUser(
     },
   );
 
-  if (!response.ok) {
+    if (response.status === 401) {
     throw new Error(
-      `Unable to log in. Server returned ${response.status}.`,
+        "Incorrect email or password.",
     );
-  }
+    }
+
+    if (!response.ok) {
+    throw new Error(
+        "Unable to sign in. Please try again.",
+    );
+    }
 
   const tokenData =
     await response.json() as TokenResponse;
