@@ -125,6 +125,13 @@
 - Verified frontend linting and production build pass
 - Verified all 31 backend tests pass
 - Manually verified task creation, session restoration, logout, and login persistence
+- Added environment-based database configuration with SQLite as the local development fallback
+- Added PostgreSQL support using Psycopg 3 for production deployment
+- Updated Alembic to use the same database configuration as the application
+- Added database URL normalization for PostgreSQL connection strings
+- Added automated tests for SQLite fallback and PostgreSQL configuration
+- Verified SQLAlchemy correctly selects the PostgreSQL Psycopg driver
+- Verified all 34 automated tests pass with no dependency or schema issues
 
 ## Checklist:
 

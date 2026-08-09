@@ -1,16 +1,58 @@
+import os
 from collections.abc import Generator
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 
-DATABASE_URL = "sqlite:///./taskforge.db"
+DEFAULT_DATABASE_URL = "sqlite:///./taskforge.db"
 
 
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False},
-)
+def normalize_database_url(
+    database_url: str,
+) -> str:
+    if database_url.startswith("postgres://"):
+        return database_url.replace(
+            "postgres://",
+            "postgresql+psycopg://",
+            1,
+        )
+
+    if database_url.startswith("postgresql://"):
+        return database_url.replace(
+            "postgresql://",
+            "postgresql+psycopg://",
+            1,
+        )
+
+    return database_url
+
+
+def get_database_url() -> str:
+    database_url = os.getenv(
+        "DATABASE_URL",
+        DEFAULT_DATABASE_URL,
+    )
+
+    return normalize_database_url(
+        database_url,
+    )
+
+
+DATABASE_URL = get_database_url()
+
+
+if DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args={
+            "check_same_thread": False,
+        },
+    )
+else:
+    engine = create_engine(
+        DATABASE_URL,
+    )
 
 
 SessionLocal = sessionmaker(
