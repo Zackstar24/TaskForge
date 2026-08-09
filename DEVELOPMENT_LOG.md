@@ -132,6 +132,12 @@
 - Added automated tests for SQLite fallback and PostgreSQL configuration
 - Verified SQLAlchemy correctly selects the PostgreSQL Psycopg driver
 - Verified all 34 automated tests pass with no dependency or schema issues
+- Provisioned a managed PostgreSQL database on Render and successfully applied the full Alembic migration history.
+- Verified TaskForge locally against the Render PostgreSQL database, including registration, authentication, task creation, and persistence.
+- Deployed the FastAPI backend to Render and verified the public API, Swagger documentation, JWT authentication, and authenticated task operations.
+- Deployed the React frontend to Render at https://taskforge-zack.onrender.com.
+- Added environment-driven production CORS configuration while preserving localhost development origins.
+- Added CORS configuration coverage and verified the full backend test suite with 35 passing tests.
 
 ## Checklist:
 

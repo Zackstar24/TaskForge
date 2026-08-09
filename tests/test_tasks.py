@@ -3,6 +3,7 @@ from typing import Any
 import pytest
 from fastapi.testclient import TestClient
 
+from backend.main import get_allowed_origins
 
 @pytest.fixture(autouse=True)
 def authenticate_task_client(
@@ -121,6 +122,18 @@ def test_cors_allows_frontend_origin(
         response.headers["access-control-allow-origin"]
         == "http://localhost:5173"
     )
+
+def test_allowed_origins_includes_configured_frontend(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv(
+        "FRONTEND_ORIGIN",
+        "https://taskforge-zack.onrender.com/",
+    )
+
+    origins = get_allowed_origins()
+
+    assert "https://taskforge-zack.onrender.com" in origins
 
 def test_create_task(client: TestClient) -> None:
     response = client.post(
